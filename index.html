@@ -80,8 +80,26 @@
             transform: translateY(-2px);
         }
 
-        .form-group input:valid {
+        .form-group input[type="file"] {
+            background: white;
+            padding: 10px;
+            border: 2px dashed #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .form-group input[type="file"]:hover {
             border-color: #28a745;
+            background: #f8fff9;
+        }
+
+        .form-group input[type="file"]:focus {
+            outline: none;
+            border-color: #28a745;
+            border-style: solid;
+            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
         }
 
         .btn-container {
@@ -161,11 +179,11 @@
         }
 
         .config-notice {
-            background: #fff3cd;
-            color: #856404;
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
             padding: 20px;
             border-radius: 10px;
-            border: 1px solid #ffeaa7;
             margin-bottom: 30px;
             text-align: center;
         }
@@ -205,7 +223,7 @@
         </div>
         
         <div class="form-section">
-            <div class="config-notice" style="background: #d1ecf1; color: #0c5460; border-color: #bee5eb;">
+            <div class="config-notice">
                 <h3>✅ Formulario Configurado</h3>
                 <p>El formulario está conectado a Google Sheets y listo para recibir inscripciones.</p>
                 <p>Los datos se guardarán automáticamente cuando los jugadores se inscriban.</p>
@@ -230,6 +248,15 @@
                 <div class="form-group">
                     <label for="fechaNacimiento">Fecha de Nacimiento *</label>
                     <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="documentoIdentidad">Documento de Identidad *</label>
+                    <input type="file" id="documentoIdentidad" name="documentoIdentidad" 
+                           accept=".jpg,.jpeg,.png,.pdf" required>
+                    <small style="color: #666; font-size: 0.9em; margin-top: 5px; display: block;">
+                        Formatos permitidos: JPG, PNG, PDF (Máximo 5MB)
+                    </small>
                 </div>
                 
                 <div class="btn-container">
@@ -268,15 +295,38 @@
                 return;
             }
             
+            // Validar archivo
+            const fileInput = document.getElementById('documentoIdentidad');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                showError('Por favor selecciona un documento de identidad.');
+                return;
+            }
+            
+            // Validar tamaño del archivo (5MB máximo)
+            if (file.size > 5 * 1024 * 1024) {
+                showError('El archivo es muy grande. Máximo 5MB permitidos.');
+                return;
+            }
+            
+            // Validar tipo de archivo
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+            if (!allowedTypes.includes(file.type)) {
+                showError('Formato no permitido. Solo JPG, PNG o PDF.');
+                return;
+            }
+            
             // Mostrar loading
             showLoading(true);
             
-            // Obtener valores del formulario
+            // Crear FormData con archivo
             const formData = new FormData();
             formData.append('nombres', document.getElementById('nombres').value);
             formData.append('apellidos', document.getElementById('apellidos').value);
             formData.append('cedula', document.getElementById('cedula').value);
             formData.append('fechaNacimiento', document.getElementById('fechaNacimiento').value);
+            formData.append('documentoIdentidad', file);
             
             // Calcular edad
             const fechaNac = new Date(document.getElementById('fechaNacimiento').value);
