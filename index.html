@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torneo Senior Master Quibdó 2025 II</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .form-section {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #28a745;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-group input:valid {
+            border-color: #28a745;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(40, 167, 69, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #28a745;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .success-message {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #c3e6cb;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .error-message {
+            display: none;
+            background: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #f5c6cb;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .config-notice {
+            background: #fff3cd;
+            color: #856404;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #ffeaa7;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .config-notice h3 {
+            margin-bottom: 10px;
+            color: #b45309;
+        }
+
+        .config-notice code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+            }
+            
+            .form-section {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚽ Torneo Senior Master Quibdó 2025 II</h1>
+            <p>Completa tus datos para registrarte en el torneo</p>
+        </div>
+        
+        <div class="form-section">
+            <div class="config-notice" style="background: #d1ecf1; color: #0c5460; border-color: #bee5eb;">
+                <h3>✅ Formulario Configurado</h3>
+                <p>El formulario está conectado a Google Sheets y listo para recibir inscripciones.</p>
+                <p>Los datos se guardarán automáticamente cuando los jugadores se inscriban.</p>
+            </div>
+
+            <form id="inscripcionForm">
+                <div class="form-group">
+                    <label for="nombres">Nombres *</label>
+                    <input type="text" id="nombres" name="nombres" required placeholder="Ingresa tus nombres">
+                </div>
+                
+                <div class="form-group">
+                    <label for="apellidos">Apellidos *</label>
+                    <input type="text" id="apellidos" name="apellidos" required placeholder="Ingresa tus apellidos">
+                </div>
+                
+                <div class="form-group">
+                    <label for="cedula">Número de Cédula *</label>
+                    <input type="text" id="cedula" name="cedula" required placeholder="Ej: 12345678" pattern="[0-9]{6,12}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="fechaNacimiento">Fecha de Nacimiento *</label>
+                    <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+                </div>
+                
+                <div class="btn-container">
+                    <button type="submit" class="btn" id="submitBtn">Inscribirse</button>
+                </div>
+            </form>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Enviando inscripción...</p>
+            </div>
+
+            <div class="success-message" id="successMessage">
+                <h3>✅ ¡Inscripción Exitosa!</h3>
+                <p>Tu inscripción ha sido registrada correctamente en el sistema.</p>
+                <p>Los datos han sido guardados en Google Sheets.</p>
+            </div>
+
+            <div class="error-message" id="errorMessage">
+                <h3>❌ Error en la inscripción</h3>
+                <p id="errorText">Ha ocurrido un error. Por favor, intenta nuevamente.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // URL configurada de Google Apps Script
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzi5ksLh-DJsdS6m98-CNrKSzGILu02tYmHemo-snNTvRjO5u37kO09IE2-ngxZ8snH/exec';
+
+        document.getElementById('inscripcionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Verificar si la URL está configurada
+            if (GOOGLE_SCRIPT_URL.includes('REEMPLAZA_CON_TU_URL')) {
+                showError('Error: URL de Google Apps Script no configurada. Por favor revisa las instrucciones.');
+                return;
+            }
+            
+            // Mostrar loading
+            showLoading(true);
+            
+            // Obtener valores del formulario
+            const formData = new FormData();
+            formData.append('nombres', document.getElementById('nombres').value);
+            formData.append('apellidos', document.getElementById('apellidos').value);
+            formData.append('cedula', document.getElementById('cedula').value);
+            formData.append('fechaNacimiento', document.getElementById('fechaNacimiento').value);
+            
+            // Calcular edad
+            const fechaNac = new Date(document.getElementById('fechaNacimiento').value);
+            const hoy = new Date();
+            let edad = hoy.getFullYear() - fechaNac.getFullYear();
+            const mesActual = hoy.getMonth();
+            const mesNacimiento = fechaNac.getMonth();
+            
+            if (mesActual < mesNacimiento || (mesActual === mesNacimiento && hoy.getDate() < fechaNac.getDate())) {
+                edad--;
+            }
+            
+            formData.append('edad', edad);
+            formData.append('fechaInscripcion', new Date().toISOString());
+            
+            // Enviar datos a Google Sheets
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                showLoading(false);
+                if (data.result === 'success') {
+                    showSuccess();
+                    // Limpiar formulario
+                    document.getElementById('inscripcionForm').reset();
+                } else {
+                    showError('Error: ' + (data.error || 'Error desconocido'));
+                }
+            })
+            .catch(error => {
+                showLoading(false);
+                showError('Error de conexión: ' + error.message);
+            });
+        });
+        
+        function showLoading(show) {
+            const loading = document.getElementById('loading');
+            const form = document.getElementById('inscripcionForm');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            if (show) {
+                loading.style.display = 'block';
+                form.style.display = 'none';
+                submitBtn.disabled = true;
+            } else {
+                loading.style.display = 'none';
+                form.style.display = 'block';
+                submitBtn.disabled = false;
+            }
+        }
+        
+        function showSuccess() {
+            document.getElementById('successMessage').style.display = 'block';
+            document.getElementById('errorMessage').style.display = 'none';
+            
+            // Ocultar mensaje después de 5 segundos
+            setTimeout(() => {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 5000);
+        }
+        
+        function showError(message) {
+            document.getElementById('errorText').textContent = message;
+            document.getElementById('errorMessage').style.display = 'block';
+            document.getElementById('successMessage').style.display = 'none';
+        }
+        
+        // Validación en tiempo real para la cédula
+        document.getElementById('cedula').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+        
+        // Establecer fecha máxima (hoy) para el campo de fecha de nacimiento
+        document.getElementById('fechaNacimiento').max = new Date().toISOString().split('T')[0];
+    </script>
+</body>
+</html>
